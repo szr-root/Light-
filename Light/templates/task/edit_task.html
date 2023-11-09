@@ -1,0 +1,57 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css' %}">
+{% endblock %}
+
+{% block content %}
+
+    <form method="post" novalidate>
+        {% csrf_token %}
+
+        {% for field in form %}
+
+            <div class="form-group" style="position: relative;margin-bottom: 25px">
+                <label for="{{ field.id_for_label }}">
+                    {{ field.label }}
+                    {% if field.help_text %}
+                        <span style="font-weight: 400;color: #333333;">（{{ field.help_text }}）</span>
+                    {% endif %}
+                </label>
+                {{ field }}
+                <span style="color: red;position: absolute;">{{ field.errors.0 }}</span>
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary">保 存</button>
+    </form>
+
+
+{% endblock %}
+
+
+{% block js %}
+    <script src="{% static 'plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js' %}"></script>
+    <script>
+                $(function(){
+            $('#id_start_datetime').datepicker({
+                autoclose: true,
+                format:'yyyy-mm-dd',
+                startDate:0,
+                language:'zh-CN'
+            });
+        });
+
+        $(function(){
+            $('#id_finish_datetime').datepicker({
+                autoclose: true,
+                format:'yyyy-mm-dd',
+                startDate:0,
+                language:'zh-CN'
+            });
+        });
+
+    </script>
+
+
+{% endblock %}

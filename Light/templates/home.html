@@ -1,0 +1,32 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block title %}
+    <title>首页</title>
+{% endblock %}
+
+{% block content %}
+    <div id="pageMsg" style="position: fixed; z-index: 9000; top: 48px; left:0;right:0; width: 300px;margin: 20px auto;">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} text-center" role="alert">
+              {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+
+    <h1>欢迎最牛{{ request.light_user.role }}:{{ request.light_user.name }} 登录</h1>
+    {% if request.light_user.role == '开发' %}
+        <img style="width: 400px;height: 400px;" src="{% static 'images/bug2.jpeg' %}">
+    {% else %}
+        <img style="width: 500px;height: 400px;" src="{% static 'images/test.jpeg' %}">
+    {% endif %}
+
+{% endblock %}
+
+{% block js %}
+    <script>
+        setTimeout(function (){
+            $("#pageMsg").empty();
+        },5000);
+    </script>
+{% endblock %}

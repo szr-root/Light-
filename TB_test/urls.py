@@ -1,0 +1,47 @@
+"""
+URL configuration for TB_test project.
+
+The `urlpatterns` list routes URLs to views. For more information please see:
+    https://docs.djangoproject.com/en/4.2/topics/http/urls/
+Examples:
+Function views
+    1. Add an import:  from my_app import views
+    2. Add a URL to urlpatterns:  path('', views.home, name='home')
+Class-based views
+    1. Add an import:  from other_app.views import Home
+    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+Including another URLconf
+    1. Import the include() function: from django.urls import include, path
+    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+"""
+from django.urls import path
+from Light.views import account
+from Light.views.user import info
+from Light.views.task import task
+from Light.views.work import anchor
+
+urlpatterns = [
+    # path('admin/', admin.site.urls),
+    # 用户相关
+    path('login/', account.login, name='login'),
+    path('home/', account.home, name='home'),
+    path('logout/', account.logout, name='logout'),
+    path('add_user/', account.add_user, name='add_user'),
+    path('info/list/', info.info_list, name='info_list'),
+
+    # 测试任务相关
+    path('task/task_list/', task.task_list, name='task_list'),
+    path('task/add_task/', task.add_task, name='add_task'),
+    path('task/edit_task/<int:pk>', task.edit_task, name='edit_task'),
+    path('task/delete_task/<int:pk>', task.delete_task, name='delete_task'),
+    path('task/send_feishu/', task.send_feishu, name='send_feishu'),
+
+    # 业务相关
+    path('anchor/anchor_onlie', anchor.anchor_onlie, name='anchor_onlie'),
+
+    # 人员相关
+    path('user/develop_list', info.develop_list, name='develop_list'),
+
+
+
+]
