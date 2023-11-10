@@ -11,6 +11,7 @@ from django.core.exceptions import ValidationError
 from Light import models
 from utils.encrypt import md5_string
 from utils.bootstrap import BootStrapForm
+from utils.pager import Pagination
 
 
 class ResetPasswordModelForm(BootStrapForm, forms.ModelForm):
@@ -67,5 +68,14 @@ def info_list(request):
 
 
 def develop_list(request):
+    queryset = models.Developer.objects.filter(active=1).all()
+    pager = Pagination(request, queryset)
+    context = {'pager': pager}
+    return render(request, 'user/user_list.html', context)
 
-    pass
+
+def tester_list(request):
+    queryset = models.Tester.objects.filter(active=1).all()
+    pager = Pagination(request, queryset)
+    context = {'pager': pager}
+    return render(request, 'user/user_list.html', context)

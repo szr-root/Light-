@@ -188,7 +188,8 @@ Light_PERMISSIONS = {
 
         'anchor_online': {"parent": None, "text": "主播上线"},
 
-        'develop_list':{"parent": None, "text": "测试人员"},
+        'develop_list': {"parent": None, "text": "开发人员列表"},
+        'tester_list': {"parent": None, "text": "测试人员列表"},
     },
     "Normal": {
         "logout": {"parent": None, "text": "退出"},
@@ -235,8 +236,8 @@ Light_MENUS = {
         {"text": "人员组成",
          'icon': "fa-bed",
          "children": [
-             {"text": "开发人员", "name": "develop_list", "url": "user/develop_list"},
-             {"text": "测试人员", "name": "tester_list", "url": "user/tester_list"},
+             {"text": "开发人员", "name": "develop_list", "url": "/user/develop_list"},
+             {"text": "测试人员", "name": "tester_list", "url": "/user/tester_list"},
 
          ]
          },

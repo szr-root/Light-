@@ -41,7 +41,6 @@ urlpatterns = [
 
     # 人员相关
     path('user/develop_list', info.develop_list, name='develop_list'),
-
-
+    path('user/tester_list', info.tester_list, name='tester_list'),
 
 ]
