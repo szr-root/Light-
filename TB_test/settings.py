@@ -186,11 +186,14 @@ Light_PERMISSIONS = {
         'edit_task': {"parent": 'my_task_list', "text": "编辑任务"},
         'delete_task': {"parent": 'my_task_list', "text": "删除任务"},
         'task_together': {"parent": None, "text": "测试任务汇总"},
-        'send_feishu': {"parent": 'task_list', "text": "编辑任务"},
+        'send_feishu': {"parent": 'my_task_list', "text": "发送测试任务"},
 
         'anchor_online': {"parent": None, "text": "主播上线"},
 
         'develop_list': {"parent": None, "text": "开发人员列表"},
+        'edit_develop': {"parent": 'develop_list', "text": "编辑开发人员列表"},
+        'delete_develop': {"parent": 'develop_list', "text": "删除开发人员列表"},
+
         'tester_list': {"parent": None, "text": "测试人员列表"},
     },
     "Normal": {
@@ -199,10 +202,11 @@ Light_PERMISSIONS = {
         # "add_new_develop": {"parent": None, "text": "添加用户"},
 
         'my_task_list': {"parent": None, "text": "我的任务记录"},
-        'add_task': {"parent": 'task_list', "text": "创建任务"},
-        'edit_task': {"parent": 'task_list', "text": "编辑任务"},
-        'delete_task': {"parent": 'task_list', "text": "编辑任务"},
-        'send_feishu': {"parent": 'task_list', "text": "编辑任务"},
+        'add_task': {"parent": 'my_task_list', "text": "创建任务"},
+        'edit_task': {"parent": 'my_task_list', "text": "编辑任务"},
+        'delete_task': {"parent": 'my_task_list', "text": "编辑任务"},
+        'task_together': {"parent": None, "text": "测试任务汇总"},
+        # 'send_feishu': {"parent": 'task_list', "text": "编辑任务"},
 
         'anchor_online': {"parent": None, "text": "主播上线"},
 
@@ -226,7 +230,7 @@ Light_MENUS = {
             "children": [
                 {"text": "所有任务记录", "name": "all_task_lst", "url": "/task/all_task_list/"},
                 {"text": "我的任务记录", "name": "my_task_lst", "url": "/task/my_task_list/"},
-                {"text": "创建测试任务", "name": "add_task", "url": "/task/add_task/"},
+                # {"text": "创建测试任务", "name": "add_task", "url": "/task/add_task/"},
                 {"text": "测试任务汇总", "name": "task_together", "url": "/task/task_together/"},
 
             ]
@@ -261,16 +265,16 @@ Light_MENUS = {
             "text": "测试记录",
             'icon': "fa-bed",
             "children": [
-                {"text": "我的测试任务", "name": "task_lst", "url": "/task/task_list"},
-                {"text": "创建测试任务", "name": "add_task", "url": "/task/add_task"},
-                {"text": "测试进度汇总", "name": "task_together", "url": "/task/task_together"},
+                {"text": "我的测试任务", "name": "my_task_lst", "url": "/task/my_task_list/"},
+                # {"text": "创建测试任务", "name": "add_task", "url": "/task/add_task"},
+                {"text": "测试进度汇总", "name": "task_together", "url": "/task/task_together/"},
 
             ]
         },
         {"text": "测试工具",
          'icon': "fa-bed",
          "children": [
-             {"text": "批量上线一些主播", "name": "anchor_online", "url": "anchor_online"},
+             {"text": "批量上线一些主播", "name": "anchor_online", "url": "anchor_online/"},
          ]
          },
     ]

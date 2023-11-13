@@ -65,8 +65,8 @@
                 <td>{{ row.create_date|date:"Y-m-d H:i:s" }}</td>
 
                 <td>
-                    <a class="btn btn-primary btn-xs" href="{% url_plus request 'edit_task' pk=row.id %}">编 辑</a>
-                    <a class="btn btn-danger btn-xs" href="{% url_plus request 'delete_task' pk=row.id %}">删 除</a>
+                    <a class="btn btn-primary btn-xs" href="{% url_plus request 'edit_develop' pk=row.id %}">编 辑</a>
+                    <a class="btn btn-danger btn-xs" href="{% url_plus request 'delete_develop' pk=row.id %}">删 除</a>
                 </td>
             </tr>
         {% endfor %}

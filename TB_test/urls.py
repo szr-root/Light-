@@ -43,6 +43,8 @@ urlpatterns = [
 
     # 人员相关
     path('user/develop_list/', info.develop_list, name='develop_list'),
+    path('user/edit_develop/<int:pk>/', info.edit_develop, name='edit_develop'),
+    path('user/delete_develop/<int:pk>/', info.delete_develop, name='delete_develop'),
     path('user/tester_list/', info.tester_list, name='tester_list'),
 
 ]

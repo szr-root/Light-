@@ -35,7 +35,6 @@ def add_task(request):
             break
 
     form.instance.oid = oid
-    # print(form.cleaned_data)
     form.save()
 
     from django.contrib import messages
@@ -74,7 +73,7 @@ def edit_task(request, pk):
         return render(request, "task/edit_task.html", {"form": form})
     # print(form.cleaned_data)
     form.save()
-    return redirect('task_list')
+    return redirect('my_task_list')
 
 
 def delete_task(request, pk):
@@ -106,7 +105,7 @@ def task_together(request):
         if task_status == '测试中':
             doing.append(f'{task_name} ,{task_status}, {memo} --- {tester}\n')
         if task_status == '待启动' or task_status == '测试暂停':
-            stop.append(f'{task_name} ,{task_status}, {memo} --- {tester}\n')
+            stop.append(f'{task_name} ,{task_status}, {memo} \n')
 
     # print(finish, doing, stop)
     if len(finish) != 0:
@@ -128,7 +127,6 @@ def task_together(request):
             messages += f'{i}. {item}'
             i += 1
 
-    print(messages)
     return render(request, 'task/task_together.html', {'messages': messages})
 
 

@@ -33,7 +33,7 @@ class LoginForm(BootStrapForm, forms.Form):
 
 
 class AddDevelop(BootStrapForm, forms.ModelForm):
-    exclude_field_list = ['is_admin','create_date']
+    exclude_field_list = ['is_admin', 'create_date']
     role = forms.ChoiceField(
         label="角色",
         required=True,
@@ -42,10 +42,10 @@ class AddDevelop(BootStrapForm, forms.ModelForm):
 
     class Meta:
         model = models.Developer
-        fields = ['role','username', 'password', 'name', 'mobile', 'is_admin']
+        fields = ['role', 'username', 'password', 'name', 'mobile', 'is_admin']
         widgets = {
             "role": forms.RadioSelect(attrs={'class': "form-radio"}),
-            'password': forms.TextInput(attrs={'help_text':'默认12345'}),
+            'password': forms.TextInput(attrs={'help_text': '默认12345'}),
             "is_admin": forms.RadioSelect(attrs={'class': "form-radio"})
         }
 
@@ -53,21 +53,39 @@ class AddDevelop(BootStrapForm, forms.ModelForm):
         super().__init__(*args, **kwargs)
 
 
+class EditDevelop(BootStrapForm, forms.ModelForm):
+    exclude_field_list = ['is_admin', 'create_date']
+
+    class Meta:
+        model = models.Developer
+        fields = ['username', 'password', 'name', 'mobile', 'is_admin']
+        widgets = {
+            'password': forms.PasswordInput(attrs={'help_text': '默认12345'}),
+            "is_admin": forms.RadioSelect(attrs={'class': "form-radio"})
+        }
+
+    def clean_password(self):
+        password = self.cleaned_data['password']
+        return md5_string(password)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+
 class AddTester(BootStrapForm, forms.ModelForm):
-    exclude_field_list = ['is_admin','create_date']
+    exclude_field_list = ['is_admin', 'create_date']
     role = forms.ChoiceField(
         label="角色",
         required=True,
         choices=(("0", "开发"), ("1", "测试"),)
     )
 
-
     class Meta:
         model = models.Tester
-        fields = ['role','username', 'password', 'name', 'mobile', 'is_admin']
+        fields = ['role', 'username', 'password', 'name', 'mobile', 'is_admin']
         widgets = {
             "role": forms.RadioSelect(attrs={'class': "form-radio"}),
-            'password': forms.TextInput(attrs={'help_text':'默认12345'}),
+            'password': forms.TextInput(attrs={'help_text': '默认12345'}),
             "is_admin": forms.RadioSelect(attrs={'class': "form-radio"})
         }
 
