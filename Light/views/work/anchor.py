@@ -2,6 +2,8 @@
 # @Author : John
 # @Time : 2023/11/07
 # @File : anchor.py
+from django.shortcuts import HttpResponse
+
 
 def anchor_onlie(request):
-    pass
+    return HttpResponse('ok')

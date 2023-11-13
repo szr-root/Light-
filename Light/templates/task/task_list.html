@@ -15,24 +15,26 @@
             <div class="alert alert-{{ message.tags }}" role="alert">{{ message }}</div>
         {% endfor %}
     </div>
-    {##}
-    {#    <div style="margin-bottom: 5px;">#}
-    {#        <!-- 权限判断 -->#}
-    {#        {% if request|has_permission:"yang_add" %}#}
-    {#            <a class="btn btn-primary" href="{% url_plus request 'yang_add' %}">添加</a>#}
-    {#        {% endif %}#}
-    {##}
-    {#        <div class="right">#}
-    {#            <form class="form-inline" method="GET">#}
-    {#                <div class="form-group">#}
-    {#                    <input name="keyword" type="text" class="form-control" placeholder="请输入关键字" value="{{ keyword }}">#}
-    {#                </div>#}
-    {#                <button type="submit" class="btn btn-default">#}
-    {#                    <span class="glyphicon glyphicon-search"></span>#}
-    {#                </button>#}
-    {#            </form>#}
-    {#        </div>#}
-    {#    </div>#}
+
+
+
+        <div style="margin-bottom: 5px;">
+            <!-- 权限判断 -->
+            {% if request|has_permission:"add_task" %}
+                <a class="btn btn-primary" href="{% url_plus request 'add_task' %}">添加测试任务</a>
+            {% endif %}
+
+            <div class="right">
+                <form class="form-inline" method="GET">
+                    <div class="form-group">
+                        <input name="keyword" type="text" class="form-control" placeholder="请输入关键字" value="{{ keyword }}">
+                    </div>
+                    <button type="submit" class="btn btn-default">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </button>
+                </form>
+            </div>
+        </div>
 
     <table class="table table-bordered">
         <thead>

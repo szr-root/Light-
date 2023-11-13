@@ -35,7 +35,7 @@ def add_task(request):
             break
 
     form.instance.oid = oid
-    print(form.cleaned_data)
+    # print(form.cleaned_data)
     form.save()
 
     from django.contrib import messages
@@ -44,11 +44,19 @@ def add_task(request):
     return redirect('home')
 
 
-def task_list(request):
+def my_task_list(request):
     if request.method == 'GET':
         queryset = models.Task.objects.filter(active=1, tester_id=request.light_user.id).order_by("-id")
         pager = Pagination(request, queryset)
-        print(pager)
+
+        context = {'pager': pager}
+        return render(request, 'task/task_list.html', context)
+
+
+def all_task_list(request):
+    if request.method == 'GET':
+        queryset = models.Task.objects.filter(active=1).order_by("-id")
+        pager = Pagination(request, queryset)
 
         context = {'pager': pager}
         return render(request, 'task/task_list.html', context)
@@ -64,7 +72,7 @@ def edit_task(request, pk):
     form = TaskEditModelForm(data=request.POST, instance=instance)
     if not form.is_valid():
         return render(request, "task/edit_task.html", {"form": form})
-    print(form.cleaned_data)
+    # print(form.cleaned_data)
     form.save()
     return redirect('task_list')
 
@@ -76,6 +84,52 @@ def delete_task(request, pk):
 
     models.Task.objects.filter(id=pk, active=1).update(active=0)
     return redirect(origin)
+
+
+def task_together(request):
+    objects = models.Task.objects.filter(active=1).all()
+    messages = ''
+    finish = []
+    doing = []
+    stop = []
+    for object in objects:
+        # 已完成
+        task_name = object.task_name
+        memo = object.memo
+        tester = object.tester
+        task_status = object.get_status_display()
+        finish_datetime = object.finish_datetime
+        if finish_datetime is not None:
+            if task_status == '已完成测试' and finish_datetime.strftime("%Y%m%d") == datetime.date.today().strftime(
+                    "%Y%m%d"):
+                finish.append(f'{task_name} ,{task_status}, {memo} --- {tester}\n')
+        if task_status == '测试中':
+            doing.append(f'{task_name} ,{task_status}, {memo} --- {tester}\n')
+        if task_status == '待启动' or task_status == '测试暂停':
+            stop.append(f'{task_name} ,{task_status}, {memo} --- {tester}\n')
+
+    # print(finish, doing, stop)
+    if len(finish) != 0:
+        messages += '已完成:\n'
+        i = 1
+        for item in finish:
+            messages += f'{i}. {item}'
+            i += 1
+    if len(doing) != 0:
+        messages += '\n进行中:\n'
+        i = 1
+        for item in doing:
+            messages += f'{i}. {item}'
+            i += 1
+    if len(stop) != 0:
+        messages += '\n暂停:\n'
+        i = 1
+        for item in stop:
+            messages += f'{i}. {item}'
+            i += 1
+
+    print(messages)
+    return render(request, 'task/task_together.html', {'messages': messages})
 
 
 def send_feishu(request):
@@ -92,7 +146,8 @@ def send_feishu(request):
         task_status = object.get_status_display()
         finish_datetime = object.finish_datetime
         if finish_datetime is not None:
-            if task_status == '已完成测试' and finish_datetime.strftime("%Y%m%d") == datetime.date.today().strftime("%Y%m%d"):
+            if task_status == '已完成测试' and finish_datetime.strftime("%Y%m%d") == datetime.date.today().strftime(
+                    "%Y%m%d"):
                 finish.append(f'{task_name} ,{task_status}, {memo} --- {tester}\n')
         if task_status == '测试中':
             doing.append(f'{task_name} ,{task_status}, {memo} --- {tester}\n')
@@ -121,4 +176,4 @@ def send_feishu(request):
             i += 1
 
     feishu_send_massage(messages)
-    return redirect('task_list')
+    return redirect('task_together')

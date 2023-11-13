@@ -30,17 +30,19 @@ urlpatterns = [
     path('info/list/', info.info_list, name='info_list'),
 
     # 测试任务相关
-    path('task/task_list/', task.task_list, name='task_list'),
+    path('task/my_task_list/', task.my_task_list, name='my_task_list'),
+    path('task/all_task_list/', task.all_task_list, name='all_task_list'),
     path('task/add_task/', task.add_task, name='add_task'),
-    path('task/edit_task/<int:pk>', task.edit_task, name='edit_task'),
-    path('task/delete_task/<int:pk>', task.delete_task, name='delete_task'),
+    path('task/edit_task/<int:pk>/', task.edit_task, name='edit_task'),
+    path('task/delete_task/<int:pk>/', task.delete_task, name='delete_task'),
+    path('task/task_together/', task.task_together, name='task_together'),
     path('task/send_feishu/', task.send_feishu, name='send_feishu'),
 
     # 业务相关
-    path('anchor/anchor_onlie', anchor.anchor_onlie, name='anchor_onlie'),
+    path('anchor/anchor_onlie/', anchor.anchor_onlie, name='anchor_onlie'),
 
     # 人员相关
-    path('user/develop_list', info.develop_list, name='develop_list'),
-    path('user/tester_list', info.tester_list, name='tester_list'),
+    path('user/develop_list/', info.develop_list, name='develop_list'),
+    path('user/tester_list/', info.tester_list, name='tester_list'),
 
 ]

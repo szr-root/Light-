@@ -11,8 +11,8 @@ import requests
 
 def feishu_send_massage(message):
     # 私人群聊
-    # url = "https://open.feishu.cn/open-apis/bot/v2/hook/548cccf2-2fa1-4c8e-a31f-f135b8e562c7"
-    url = "https://open.feishu.cn/open-apis/bot/v2/hook/46654635-7e10-4235-8ccb-5e945eca2177"
+    url = "https://open.feishu.cn/open-apis/bot/v2/hook/548cccf2-2fa1-4c8e-a31f-f135b8e562c7"
+    # url = "https://open.feishu.cn/open-apis/bot/v2/hook/46654635-7e10-4235-8ccb-5e945eca2177"
     headers = {"Content-Type": "application/json"}
     payload_message = {
         "msg_type": "interactive",
@@ -54,7 +54,8 @@ def feishu_send_massage(message):
 
     }
 
-    requests.request("POST", url, headers=headers, data=json.dumps(payload_message))
+    res = requests.post(url, headers=headers, data=json.dumps(payload_message))
+    print(res.json())
 
 
 if __name__ == '__main__':
