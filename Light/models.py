@@ -62,10 +62,23 @@ class Task(ActiveBaseModel):
     start_datetime = models.DateTimeField(verbose_name="开始时间", null=True, blank=True)
     finish_datetime = models.DateTimeField(verbose_name="完成时间", null=True, blank=True)
     oid = models.CharField(verbose_name="测试单号", max_length=64, unique=True)
-    tester = models.ForeignKey(verbose_name="测试人员", to="Tester", on_delete=models.CASCADE)
-    # tester = models.ManyToManyField(Tester)
-    developer = models.ForeignKey(verbose_name='开发人员', to='Developer', on_delete=models.CASCADE)
+    # tester = models.ForeignKey(verbose_name="测试人员", to="Tester", on_delete=models.CASCADE)
+    tester = models.ManyToManyField(to='Tester')
+    # tester = models.ManyToManyField(to='Tester', through='Task2Tester', through_fields=('task', 'tester'))
+    # developer = models.ForeignKey(verbose_name='开发人员', to='Developer', on_delete=models.CASCADE)
+    # develop = models.ManyToManyField(to='Developer', through='Task2Develop', through_fields=('task', 'develop'))
+    developer = models.ManyToManyField(to='Developer')
     memo = models.TextField(verbose_name="备注", null=True, blank=True)
+
+
+# class Task2Tester:
+#     task = models.ForeignKey(to='Task', on_delete=models.CASCADE)
+#     tester = models.ForeignKey(to='Tester', on_delete=models.CASCADE)
+#
+#
+# class Task2Develop:
+#     task = models.ForeignKey(to='Task', on_delete=models.CASCADE)
+#     develop = models.ForeignKey(to='Developer', on_delete=models.CASCADE)
 
 
 class TestRecord(ActiveBaseModel):

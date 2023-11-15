@@ -2,7 +2,7 @@
 
 {% block content %}
 
-    <h1 class="text-center">添加<span id="role">开发</span>人员</h1>
+    <h1 class="text-center">添加<span id="role"></span>人员</h1>
     <form method="post" novalidate>
         {% csrf_token %}
 
@@ -38,6 +38,18 @@
 
 {% block js %}
     <script>
+        $(document).ready(function() {
+        // 通过 text() 方法设置文本内容
+            if ($('#id_role').val() === '1'){
+            $('#role').text('测试')
+            }
+            else {
+                $('#role').text('开发')
+            }
+
+
+        });
+
         $('#id_is_admin_0').click(function (){
              $('.alert').attr('hidden', true);
         })

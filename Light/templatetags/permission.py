@@ -9,7 +9,7 @@ register = Library()
 
 
 @register.inclusion_tag("tag/breadcrumb.html")
-def nb_breadcrumb(request):
+def light_breadcrumb(request):
     permission_dict = settings.Light_PERMISSIONS[request.light_user.is_admin]
     url_name = request.resolver_match.url_name
     text_list = []

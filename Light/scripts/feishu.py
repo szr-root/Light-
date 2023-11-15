@@ -35,7 +35,7 @@ def feishu_send_massage(message):
                 {
                     "elements": [
                         {
-                            "content": "[详情查看日志](https://testbird.feishu.cn/base/"
+                            "content": "[详情查看迭代进度表](https://testbird.feishu.cn/base/"
                                        "WY81bWh0zaTQ3JsqSxWcK5eGnRm?table=tblQb2bnWMnPIiy8&view=vewUeX9AwM)",
                             "tag": "lark_md"
                         }
@@ -55,7 +55,7 @@ def feishu_send_massage(message):
     }
 
     res = requests.post(url, headers=headers, data=json.dumps(payload_message))
-    print(res.json())
+
 
 
 if __name__ == '__main__':

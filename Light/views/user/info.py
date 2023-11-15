@@ -9,7 +9,7 @@ from django.shortcuts import render, redirect
 from django.core.exceptions import ValidationError
 
 from Light import models
-from Light.forms.account import AddDevelop,EditDevelop
+from Light.forms.account import AddDevelop, EditDevelop
 from utils.encrypt import md5_string
 from utils.bootstrap import BootStrapForm
 from utils.pager import Pagination
@@ -42,8 +42,14 @@ class ResetPasswordModelForm(BootStrapForm, forms.ModelForm):
 
 
 def info_list(request):
-    # 获取当前用户信息
-    instance = models.Tester.objects.filter(id=request.light_user.id, active=1).first()
+    # print(request.light_user.role)
+    if request.light_user.role == '测试':
+        # 获取当前用户信息
+        instance = models.Tester.objects.filter(id=request.light_user.id, active=1).first()
+
+    else:
+        instance = models.Developer.objects.filter(id=request.light_user.id, active=1).first()
+
     if request.method == "GET":
         # 生成Form表单
         form = ResetPasswordModelForm()
@@ -88,18 +94,27 @@ def edit_develop(request, pk):
     form.save()
     return redirect('develop_list')
 
-def delete_develop(request, pk):
-    instance = models.Developer.objects.filter(id=pk, active=1).first()
-    if request.method == "GET":
-        form = AddDevelop(instance=instance)
-        return render(request, "user/edit_user.html", {"form": form})
 
-    form = AddDevelop(data=request.POST, instance=instance)
-    if not form.is_valid():
-        return render(request, "user/edit_user.html", {"form": form})
-    # print(form.cleaned_data)
-    form.save()
-    return redirect('develop_list')
+def delete_develop(request, pk):
+    # instance = models.Developer.objects.filter(id=pk, active=1).first()
+    # if request.method == "GET":
+    #     form = AddDevelop(instance=instance)
+    #     return render(request, "user/edit_user.html", {"form": form})
+    #
+    # form = AddDevelop(data=request.POST, instance=instance)
+    # if not form.is_valid():
+    #     return render(request, "user/edit_user.html", {"form": form})
+    # # print(form.cleaned_data)
+    # form.save()
+    # return redirect('develop_list')
+
+    origin = request.GET.get("redirect", "task/task_list")
+    if request.method == "GET":
+        return render(request, "delete.html", {"origin": origin})
+
+    models.Developer.objects.filter(id=pk, active=1).update(active=0)
+
+    return redirect(origin)
 
 
 def tester_list(request):

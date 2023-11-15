@@ -39,7 +39,7 @@ urlpatterns = [
     path('task/send_feishu/', task.send_feishu, name='send_feishu'),
 
     # 业务相关
-    path('anchor/anchor_onlie/', anchor.anchor_onlie, name='anchor_onlie'),
+    path('anchor/anchor_online/', anchor.anchor_online, name='anchor_online'),
 
     # 人员相关
     path('user/develop_list/', info.develop_list, name='develop_list'),

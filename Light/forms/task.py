@@ -11,7 +11,13 @@ from utils.bootstrap import BootStrapForm
 
 
 class AddTask(BootStrapForm, forms.ModelForm):
-    exclude_field_list = ['status', 'create_datetime', 'oid', 'finish_datetime', ]
+    exclude_field_list = ['tester', 'developer', 'status', 'create_datetime', 'oid', 'finish_datetime', ]
+
+    tester = forms.ModelMultipleChoiceField(label="参与的测试人员", queryset=models.Tester.objects.all(),
+                                            widget=forms.CheckboxSelectMultiple(attrs={'class': 'form-check-inline'}))
+    developer = forms.ModelMultipleChoiceField(label="参与的开发人员", queryset=models.Developer.objects.all(),
+                                               widget=forms.CheckboxSelectMultiple(
+                                                   attrs={'class': 'form-check-inline'}))
 
     class Meta:
         model = models.Task
@@ -22,7 +28,7 @@ class AddTask(BootStrapForm, forms.ModelForm):
 
 
 class TaskEditModelForm(BootStrapForm, forms.ModelForm):
-    exclude_field_list = ['status', 'create_datetime', 'oid' ]
+    exclude_field_list = ['status', 'create_datetime', 'oid']
 
     class Meta:
         status_choices = (
@@ -33,7 +39,7 @@ class TaskEditModelForm(BootStrapForm, forms.ModelForm):
             (5, "不需要测试"),
         )
         model = models.Task
-        fields = ['task_name', 'status', 'start_datetime','finish_datetime', 'tester', 'developer', 'memo']
+        fields = ['task_name', 'status', 'start_datetime', 'finish_datetime', 'tester', 'developer', 'memo']
         widgets = {
             # forms.ChoiceField(choices=status_choices, widget=forms.Select(attrs={'class': 'form-control'}))
             'status': forms.Select(attrs={'class': 'btn btn-info dropdown-toggle'})

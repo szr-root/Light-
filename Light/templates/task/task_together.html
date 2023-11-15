@@ -1,6 +1,7 @@
 {% extends 'layout.html' %}
 {% load static %}
 {% load common %}
+{% load permission %}
 
 {% block content %}
 
@@ -14,11 +15,16 @@
     </div>
 
     <div class="left" style="margin-top: 5px;">
-        <a class="btn btn-info btn-xs" id="btnSendTask" href="{% url_plus request 'all_task_list' %}">查看所有测试任务</a>
+        {% if request|has_permission:"my_task_list" %}
+            <a class="btn btn-info btn-xs" id="btnSendTask" href="{% url_plus request 'my_task_list' %}">查看我的测试任务</a>
+        {% endif %}
     </div>
 
+
     <div class="right" style="margin-top: 5px;">
-        <a class="btn btn-info btn-xs" id="btnSendTask" href="{% url_plus request 'send_feishu' %}">发送测试进度</a>
+        {% if request|has_permission:"send_feishu" %}
+            <a class="btn btn-info btn-xs" id="btnSendTask" href="{% url_plus request 'send_feishu' %}">发送测试进度</a>
+        {% endif %}
     </div>
 
 

@@ -1,7 +1,12 @@
 # from django.conf import settings
+
+import os
+from urllib.parse import urlparse
+
 from TB_test import settings
-from django.shortcuts import render, redirect,HttpResponse
-from Light.forms.account import LoginForm, AddDevelop,AddTester
+from django.urls import resolve
+from django.shortcuts import render, redirect, HttpResponse
+from Light.forms.account import LoginForm, AddDevelop, AddTester
 from Light import models
 from utils.encrypt import md5_string
 
@@ -54,9 +59,35 @@ def logout(request):
     return redirect("login")
 
 
+def get_referer_path(request):
+    referer = request.META.get('HTTP_REFERER', None)
+
+    if referer:
+        parsed_url = urlparse(referer)
+        # 获取路径部分
+        referer_path = parsed_url.path
+        return referer_path
+
+    return None
+
+
 def add_user(request):
+
+    # if referer_path:
+    #     list = referer_path.split('/')[2]
+    # else:
+    #     list = settings.HOME_URL
+    # print(list)
     if request.method == 'GET':
-        form = AddDevelop()
+        referer_path = get_referer_path(request)
+        # print(referer_path)
+        if referer_path == '/user/tester_list/':
+            print('test!!!!!')
+            form = AddDevelop(initial={'role': '1'})
+        else:
+            print('deve!!!!!')
+            form = AddDevelop(initial={'role': '0'})
+        # request.session['rul'] = referer_path
         return render(request, "add_user.html", {'form': form})
 
     role = request.POST['role']
@@ -72,16 +103,20 @@ def add_user(request):
 
     role = form.cleaned_data.pop('role')
 
+
     pwd = form.cleaned_data['password']
     form.cleaned_data['password'] = md5_string(pwd)
 
-    print(form.cleaned_data)
+    # print(form.cleaned_data)
     form.save()
 
     from django.contrib import messages
     messages.add_message(request, messages.SUCCESS, msg)
-
-    return redirect(settings.HOME_URL)
+    # print(role)
+    if role:
+        return redirect('/user/tester_list/')
+    else:
+        return redirect('/user/develop_list/')
 
 
 def home(request):

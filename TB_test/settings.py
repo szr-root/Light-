@@ -199,6 +199,7 @@ Light_PERMISSIONS = {
     "Normal": {
         "logout": {"parent": None, "text": "退出"},
         "home": {"parent": None, "text": "个人中心"},
+        "info_list": {"parent": None, "text": "个人资料"},
         # "add_new_develop": {"parent": None, "text": "添加用户"},
 
         'my_task_list': {"parent": None, "text": "我的任务记录"},
@@ -238,7 +239,7 @@ Light_MENUS = {
         {"text": "测试工具",
          'icon': "fa-bed",
          "children": [
-             {"text": "批量上线一些主播", "name": "anchor_online", "url": "anchor_online/"},
+             {"text": "批量上线一些主播", "name": "anchor_online", "url": "/anchor/anchor_online/"},
          ]
          },
 
@@ -274,7 +275,7 @@ Light_MENUS = {
         {"text": "测试工具",
          'icon': "fa-bed",
          "children": [
-             {"text": "批量上线一些主播", "name": "anchor_online", "url": "anchor_online/"},
+             {"text": "批量上线一些主播", "name": "anchor_online", "url": "/anchor_online/"},
          ]
          },
     ]

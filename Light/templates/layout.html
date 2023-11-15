@@ -30,7 +30,7 @@
             <div class="user-info right">
                 <a href="#" class="avatar" style="text-decoration: none;">
                     <span style="color: white;margin-right: 5px;">{{ request.nb_user.name }}</span>
-                    <img class="img-circle" style="width: 35px;height: 35px;" src="{% static 'images/default.png' %}">
+                    <img class="img-circle" style="width: 35px;height: 35px;" src="{% static 'images/avatar.jpeg' %}">
                 </a>
 
                 <div class="more-info">
@@ -52,7 +52,7 @@
     </div>
 
     <div class="right-body">
-        {% nb_breadcrumb request %}
+        {% light_breadcrumb request %}
         <div style="padding: 0 20px 20px 20px;">
             {% block content %}{% endblock %}
         </div>
