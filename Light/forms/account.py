@@ -49,6 +49,10 @@ class AddDevelop(BootStrapForm, forms.ModelForm):
             "is_admin": forms.RadioSelect(attrs={'class': "form-radio"})
         }
 
+    def clean_password(self):
+        password = self.cleaned_data['password']
+        return md5_string(password)
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -60,7 +64,7 @@ class EditDevelop(BootStrapForm, forms.ModelForm):
         model = models.Developer
         fields = ['username', 'password', 'name', 'mobile', 'is_admin']
         widgets = {
-            'password': forms.PasswordInput(attrs={'help_text': '默认12345'}),
+            # 'password': forms.PasswordInput(attrs={'help_text': '默认12345'}),
             "is_admin": forms.RadioSelect(attrs={'class': "form-radio"})
         }
 
@@ -88,6 +92,10 @@ class AddTester(BootStrapForm, forms.ModelForm):
             'password': forms.TextInput(attrs={'help_text': '默认12345'}),
             "is_admin": forms.RadioSelect(attrs={'class': "form-radio"})
         }
+
+    def clean_password(self):
+        password = self.cleaned_data['password']
+        return md5_string(password)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

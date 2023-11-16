@@ -16,23 +16,23 @@
         {% endfor %}
     </div>
     {##}
-        <div style="margin-bottom: 5px;">
-            <!-- 权限判断 -->
-            {% if request|has_permission:"add_user" %}
-                <a class="btn btn-primary" href="{% url_plus request 'add_user' %}">添加</a>
-            {% endif %}
+    <div style="margin-bottom: 5px;">
+        <!-- 权限判断 -->
+        {% if request|has_permission:"add_user" %}
+            <a class="btn btn-primary" href="{% url_plus request 'add_user' %}">添加</a>
+        {% endif %}
 
-            <div class="right">
-                <form class="form-inline" method="GET">
-                    <div class="form-group">
-                        <input name="keyword" type="text" class="form-control" placeholder="请输入关键字" value="{{ keyword }}">
-                    </div>
-                    <button type="submit" class="btn btn-default">
-                        <span class="glyphicon glyphicon-search"></span>
-                    </button>
-                </form>
-            </div>
+        <div class="right">
+            <form class="form-inline" method="GET">
+                <div class="form-group">
+                    <input name="keyword" type="text" class="form-control" placeholder="请输入关键字" value="{{ keyword }}">
+                </div>
+                <button type="submit" class="btn btn-default">
+                    <span class="glyphicon glyphicon-search"></span>
+                </button>
+            </form>
         </div>
+    </div>
 
     <table class="table table-bordered">
         <thead>
@@ -50,7 +50,7 @@
         {% for row in pager.queryset %}
             <tr>
                 <td>{% loop_counter request forloop.counter %}</td>
-{#                <td>{{ row.id }}</td>#}
+                {#                <td>{{ row.id }}</td>#}
                 <td>{{ row.name }}</td>
                 <td>{{ row.username }}</td>
 
@@ -63,10 +63,16 @@
                     {% endif %}
                 </td>
                 <td>{{ row.create_date|date:"Y-m-d H:i:s" }}</td>
-
                 <td>
-                    <a class="btn btn-primary btn-xs" href="{% url_plus request 'edit_develop' pk=row.id %}">编 辑</a>
-                    <a class="btn btn-danger btn-xs" href="{% url_plus request 'delete_develop' pk=row.id %}">删 除</a>
+                    {% if role == 0 %}
+                        <a class="btn btn-primary btn-xs" href="{% url_plus request 'edit_develop' pk=row.id %}">编 辑</a>
+                        <a class="btn btn-danger btn-xs" href="{% url_plus request 'delete_develop' pk=row.id %}">删
+                            除</a>
+                    {% else %}
+                        <a class="btn btn-primary btn-xs" href="{% url_plus request 'edit_tester' pk=row.id %}">编 辑</a>
+                        <a class="btn btn-danger btn-xs" href="{% url_plus request 'delete_tester' pk=row.id %}">删
+                            除</a>
+                    {% endif %}
                 </td>
             </tr>
         {% endfor %}

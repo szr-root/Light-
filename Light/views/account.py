@@ -114,9 +114,9 @@ def add_user(request):
     messages.add_message(request, messages.SUCCESS, msg)
     # print(role)
     if role:
-        return redirect('/user/tester_list/')
-    else:
         return redirect('/user/develop_list/')
+    else:
+        return redirect('/user/tester_list/')
 
 
 def home(request):

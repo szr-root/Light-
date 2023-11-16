@@ -195,6 +195,8 @@ Light_PERMISSIONS = {
         'delete_develop': {"parent": 'develop_list', "text": "删除开发人员列表"},
 
         'tester_list': {"parent": None, "text": "测试人员列表"},
+        'edit_tester': {"parent": 'tester_list', "text": "编辑测试人员列表"},
+        'delete_tester': {"parent": 'tester_list', "text": "删除测试人员列表"},
     },
     "Normal": {
         "logout": {"parent": None, "text": "退出"},

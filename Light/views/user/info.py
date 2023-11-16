@@ -77,7 +77,7 @@ def info_list(request):
 def develop_list(request):
     queryset = models.Developer.objects.filter(active=1).all()
     pager = Pagination(request, queryset)
-    context = {'pager': pager}
+    context = {'pager': pager, 'role': 0}
     return render(request, 'user/user_list.html', context)
 
 
@@ -96,19 +96,7 @@ def edit_develop(request, pk):
 
 
 def delete_develop(request, pk):
-    # instance = models.Developer.objects.filter(id=pk, active=1).first()
-    # if request.method == "GET":
-    #     form = AddDevelop(instance=instance)
-    #     return render(request, "user/edit_user.html", {"form": form})
-    #
-    # form = AddDevelop(data=request.POST, instance=instance)
-    # if not form.is_valid():
-    #     return render(request, "user/edit_user.html", {"form": form})
-    # # print(form.cleaned_data)
-    # form.save()
-    # return redirect('develop_list')
-
-    origin = request.GET.get("redirect", "task/task_list")
+    origin = request.GET.get("redirect", "user/develop_list")
     if request.method == "GET":
         return render(request, "delete.html", {"origin": origin})
 
@@ -120,5 +108,29 @@ def delete_develop(request, pk):
 def tester_list(request):
     queryset = models.Tester.objects.filter(active=1).all()
     pager = Pagination(request, queryset)
-    context = {'pager': pager}
+    context = {'pager': pager, 'role': 1}
     return render(request, 'user/user_list.html', context)
+
+
+def edit_tester(request, pk):
+    instance = models.Tester.objects.filter(id=pk, active=1).first()
+    if request.method == "GET":
+        form = EditDevelop(instance=instance)
+        return render(request, "user/edit_user.html", {"form": form})
+
+    form = EditDevelop(data=request.POST, instance=instance)
+    if not form.is_valid():
+        return render(request, "user/edit_user.html", {"form": form})
+    # print(form.cleaned_data)
+    form.save()
+    return redirect('tester_list')
+
+
+def delete_tester(request, pk):
+    origin = request.GET.get("redirect", "user/tester_list")
+    if request.method == "GET":
+        return render(request, "delete.html", {"origin": origin})
+
+    models.Tester.objects.filter(id=pk, active=1).update(active=0)
+
+    return redirect(origin)

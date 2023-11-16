@@ -2,13 +2,20 @@
 
 {% block content %}
 
-    <h1 class="text-center">编辑<span id="role">开发</span>人员</h1>
+
+    {% if role == 1 %}
+        <h1 class="text-center">编辑<span id="role">测试</span>人员
+    {% else %}
+        <h1 class="text-center">编辑<span id="role">开发</span>人员
+    {% endif %}
+
+</h1>
     <form method="post" novalidate>
         {% csrf_token %}
 
         {% for field in form %}
 
-            <div class="form-group"  style="position: relative;margin-bottom: 25px">
+            <div class="form-group" style="position: relative;margin-bottom: 25px">
                 <label for="{{ field.id_for_label }}">
                     {{ field.label }}
                     {% if field.help_text %}
@@ -19,15 +26,16 @@
                 <span style="color: red;position: absolute;">{{ field.errors.0 }}</span>
             </div>
         {% endfor %}
-      <div class="alert alert-warning alert-dismissible fade in" role="alert" hidden="true">
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
-          <h4>确定给该用户添加管理员权限？</h4>
-          <p>如果添加管理员权限，可以访问更多的页面</p>
-          <p>
-            <button type="button" class="btn btn-danger cancel_alert">取消</button>
-            <button type="button" class="btn btn-primary confirm_alert">确定</button>
-          </p>
-    </div>
+        <div class="alert alert-warning alert-dismissible fade in" role="alert" hidden="true">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                    aria-hidden="true">×</span></button>
+            <h4>确定给该用户添加管理员权限？</h4>
+            <p>如果添加管理员权限，可以访问更多的页面</p>
+            <p>
+                <button type="button" class="btn btn-danger cancel_alert">取消</button>
+                <button type="button" class="btn btn-primary confirm_alert">确定</button>
+            </p>
+        </div>
 
         <button type="submit" class="btn btn-primary">保 存</button>
     </form>
@@ -38,26 +46,25 @@
 
 {% block js %}
     <script>
-        $('#id_is_admin_0').click(function (){
-             $('.alert').attr('hidden', true);
-        })
-        $('#id_is_admin_1').click(function (){
-             $('.alert').attr('hidden', false);
-        })
-        $('.cancel_alert').click(function (){
-            $('#id_is_admin_0').prop('checked',true)
-            $('#id_is_admin_1').prop('checked',false)
+        $('#id_is_admin_0').click(function () {
             $('.alert').attr('hidden', true);
         })
-        $('.confirm_alert').click(function (){
-             $('.alert').attr('hidden', true);
+        $('#id_is_admin_1').click(function () {
+            $('.alert').attr('hidden', false);
+        })
+        $('.cancel_alert').click(function () {
+            $('#id_is_admin_0').prop('checked', true)
+            $('#id_is_admin_1').prop('checked', false)
+            $('.alert').attr('hidden', true);
+        })
+        $('.confirm_alert').click(function () {
+            $('.alert').attr('hidden', true);
         })
 
         $('#id_role').change(function () {
-            if ($('#id_role').val() === '1'){
-            $('#role').text('测试')
-            }
-            else {
+            if ($('#id_role').val() === '1') {
+                $('#role').text('测试')
+            } else {
                 $('#role').text('开发')
             }
         })

@@ -46,5 +46,7 @@ urlpatterns = [
     path('user/edit_develop/<int:pk>/', info.edit_develop, name='edit_develop'),
     path('user/delete_develop/<int:pk>/', info.delete_develop, name='delete_develop'),
     path('user/tester_list/', info.tester_list, name='tester_list'),
+    path('user/edit_tester/<int:pk>/', info.edit_tester, name='edit_tester'),
+    path('user/delete_tester/<int:pk>/', info.delete_tester, name='delete_tester'),
 
 ]
