@@ -3,8 +3,21 @@
 {% load common %}
 {% load permission %}
 
+{% block title %}
+    任务列表
+{% endblock %}
+
 {% block css %}
     <link rel="stylesheet" href="{% static 'plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css' %}">
+
+    <style>
+        .description-column {
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    </style>
 {% endblock %}
 
 
@@ -18,23 +31,23 @@
 
 
 
-        <div style="margin-bottom: 5px;">
-            <!-- 权限判断 -->
-            {% if request|has_permission:"add_task" %}
-                <a class="btn btn-primary" href="{% url_plus request 'add_task' %}">添加测试任务</a>
-            {% endif %}
+    <div style="margin-bottom: 5px;">
+        <!-- 权限判断 -->
+        {% if request|has_permission:"add_task" %}
+            <a class="btn btn-primary" href="{% url_plus request 'add_task' %}">添加测试任务</a>
+        {% endif %}
 
-            <div class="right">
-                <form class="form-inline" method="GET">
-                    <div class="form-group">
-                        <input name="keyword" type="text" class="form-control" placeholder="请输入关键字" value="{{ keyword }}">
-                    </div>
-                    <button type="submit" class="btn btn-default">
-                        <span class="glyphicon glyphicon-search"></span>
-                    </button>
-                </form>
-            </div>
+        <div class="right">
+            <form class="form-inline" method="GET">
+                <div class="form-group">
+                    <input name="keyword" type="text" class="form-control" placeholder="请输入关键字" value="{{ keyword }}">
+                </div>
+                <button type="submit" class="btn btn-default">
+                    <span class="glyphicon glyphicon-search"></span>
+                </button>
+            </form>
         </div>
+    </div>
 
     <table class="table table-bordered">
         <thead>
@@ -60,14 +73,20 @@
                 <td>{{ row.task_name }}</td>
                 <td>{{ row.create_datetime|date:"Y-m-d H:i:s" }}</td>
                 <td>{{ row.oid }}</td>
-                <td>{{ row.tester }}</td>
+
+                <td>
+                    {#                    {{ row.tester.name }}#}
+                    {% for tester in row.tester.all %}
+                        {{ tester.name }}
+                    {% endfor %}
+                </td>
                 <td>
                     {{ row.get_status_display }}
                 </td>
                 <td>{{ row.start_datetime|date:"Y-m-d" }}</td>
                 <td>{{ row.finish_datetime|date:"Y-m-d" }}</td>
 
-                <td>{{ row.memo }}</td>
+                <td class="description-column"> {{ row.memo }}</td>
 
                 <td>
                     <a class="btn btn-primary btn-xs" href="{% url_plus request 'edit_task' pk=row.id %}">编 辑</a>
@@ -78,9 +97,9 @@
 
         </tbody>
     </table>
-{#    <div>#}
-{#        <a class="btn btn-info btn-xs" id="btnSendTask" href="{% url_plus request 'send_feishu' %}">发送测试进度</a>#}
-{#    </div>#}
+    {#    <div>#}
+    {#        <a class="btn btn-info btn-xs" id="btnSendTask" href="{% url_plus request 'send_feishu' %}">发送测试进度</a>#}
+    {#    </div>#}
 
     {{ pager.html }}
 

@@ -6,7 +6,7 @@ from urllib.parse import urlparse
 from TB_test import settings
 from django.urls import resolve
 from django.shortcuts import render, redirect, HttpResponse
-from Light.forms.account import LoginForm, AddDevelop, AddTester
+from Light.forms.account import LoginForm, AddUser, AddTester
 from Light import models
 from utils.encrypt import md5_string
 
@@ -16,12 +16,12 @@ def login(request):
         form = LoginForm()
         return render(request, "login.html", {'form': form})
 
-    print(request.POST)
+    # print(request.POST)
     form = LoginForm(data=request.POST)
     if not form.is_valid():
         return render(request, "login.html", {'form': form})
     data_dict = form.cleaned_data
-    print(data_dict)
+    # print(data_dict)
     role = data_dict.pop('role')
     # 取数据库查询
     if role == '1':
@@ -37,7 +37,7 @@ def login(request):
     # is_admin = data_dict.pop('is_admin')
     is_admin = user_object.is_admin
 
-    print(is_admin)
+    # print(is_admin)
 
     # 数据存在就保存session
     mapping_role = {'0': '开发', '1': '测试'}
@@ -83,10 +83,10 @@ def add_user(request):
         # print(referer_path)
         if referer_path == '/user/tester_list/':
             print('test!!!!!')
-            form = AddDevelop(initial={'role': '1'})
+            form = AddUser(initial={'role': '1'})
         else:
             print('deve!!!!!')
-            form = AddDevelop(initial={'role': '0'})
+            form = AddUser(initial={'role': '0'})
         # request.session['rul'] = referer_path
         return render(request, "add_user.html", {'form': form})
 
@@ -95,7 +95,7 @@ def add_user(request):
         form = AddTester(data=request.POST)
         msg = '新建测试人员成功'
     else:
-        form = AddDevelop(data=request.POST)
+        form = AddUser(data=request.POST)
         msg = '新建开发人员成功'
 
     if not form.is_valid():

@@ -28,7 +28,16 @@ class AddTask(BootStrapForm, forms.ModelForm):
 
 
 class TaskEditModelForm(BootStrapForm, forms.ModelForm):
-    exclude_field_list = ['status', 'create_datetime', 'oid']
+    exclude_field_list = ['tester', 'developer','status', 'create_datetime', 'oid']
+    # source = forms.ChoiceField(
+    #     label="来源",
+    #     choices=(("0", "开发"), ("1", "测试"),)
+    # )
+    tester = forms.ModelMultipleChoiceField(label="参与的测试人员", queryset=models.Tester.objects.filter(active=1).all(),
+                                            widget=forms.CheckboxSelectMultiple(attrs={'class': 'form-check-inline custom-checkbox'}))
+    developer = forms.ModelMultipleChoiceField(label="参与的开发人员", queryset=models.Developer.objects.filter(active=1).all(),
+                                               widget=forms.CheckboxSelectMultiple(
+                                                   attrs={'class': 'form-check-inline'}))
 
     class Meta:
         status_choices = (

@@ -9,7 +9,7 @@ from django.shortcuts import render, redirect
 from django.core.exceptions import ValidationError
 
 from Light import models
-from Light.forms.account import AddDevelop, EditDevelop
+from Light.forms.account import AddUser, EditDevelop
 from utils.encrypt import md5_string
 from utils.bootstrap import BootStrapForm
 from utils.pager import Pagination

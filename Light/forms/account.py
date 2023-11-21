@@ -32,7 +32,7 @@ class LoginForm(BootStrapForm, forms.Form):
         return md5_string(old)
 
 
-class AddDevelop(BootStrapForm, forms.ModelForm):
+class AddUser(BootStrapForm, forms.ModelForm):
     exclude_field_list = ['is_admin', 'create_date']
     role = forms.ChoiceField(
         label="角色",

@@ -183,10 +183,10 @@ Light_PERMISSIONS = {
         'all_task_list': {"parent": None, "text": "所有任务记录"},
         'my_task_list': {"parent": None, "text": "我的任务记录"},
         'add_task': {"parent": None, "text": "创建任务"},
-        'edit_task': {"parent": 'my_task_list', "text": "编辑任务"},
+        'edit_task': {"parent": 'all_task_list', "text": "编辑任务"},
         'delete_task': {"parent": 'my_task_list', "text": "删除任务"},
         'task_together': {"parent": None, "text": "测试任务汇总"},
-        'send_feishu': {"parent": 'my_task_list', "text": "发送测试任务"},
+        'send_feishu': {"parent": 'all_task_list', "text": "发送测试任务"},
 
         'anchor_online': {"parent": None, "text": "主播上线"},
 

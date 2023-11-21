@@ -9,6 +9,7 @@
 
     <form method="post" novalidate>
         {% csrf_token %}
+        <input type="hidden" name="source" value="{{ source }}">
 
         {% for field in form %}
 

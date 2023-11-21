@@ -10,6 +10,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 
 from Light import models
+from Light.views.account import get_referer_path
 from utils.pager import Pagination
 from Light.scripts.feishu import feishu_send_massage
 from Light.forms.task import AddTask, TaskEditModelForm
@@ -40,12 +41,12 @@ def add_task(request):
     from django.contrib import messages
     messages.add_message(request, messages.SUCCESS, "新建任务成功")
 
-    return redirect('home')
+    return redirect('all_task_list')
 
 
 def my_task_list(request):
     if request.method == 'GET':
-        queryset = models.Task.objects.filter(active=1, tester_id=request.light_user.id).order_by("-id")
+        queryset = models.Task.objects.filter(active=1, tester=request.light_user.id).order_by("-id")
         pager = Pagination(request, queryset)
 
         context = {'pager': pager}
@@ -62,18 +63,33 @@ def all_task_list(request):
 
 
 def edit_task(request, pk):
-    # origin = request.GET.get("redirect", "/home/")
     instance = models.Task.objects.filter(id=pk, active=1).first()
-    if request.method == "GET":
+    if request.method == 'GET':
+        referer_path = get_referer_path(request)
+        # print(referer_path)
+        if referer_path == '/task/my_task_list/':
+            print('my!!!!!')
+            source = '0'
+        else:
+            print('all!!!!!')
+            source = '1'
+
+        # if request.method == "GET":
         form = TaskEditModelForm(instance=instance)
-        return render(request, "task/edit_task.html", {"form": form})
+        return render(request, "task/edit_task.html", {"form": form, 'source': source})
 
     form = TaskEditModelForm(data=request.POST, instance=instance)
+
     if not form.is_valid():
         return render(request, "task/edit_task.html", {"form": form})
-    # print(form.cleaned_data)
+    # source = form.cleaned_data.pop('source')
     form.save()
-    return redirect('my_task_list')
+    source = request.POST['source']
+    # print(source)
+    if source == '1':
+        return redirect('/task/all_task_list/')
+    else:
+        return redirect('/task/my_task_list/')
 
 
 def delete_task(request, pk):
@@ -95,15 +111,19 @@ def task_together(request):
         # 已完成
         task_name = object.task_name
         memo = object.memo
-        tester = object.tester
+        tester_queryset = object.tester.all()
+        testers = []
+        for tester in tester_queryset:
+            testers.append(tester.name)
+        testers_str = ','.join(testers)
         task_status = object.get_status_display()
         finish_datetime = object.finish_datetime
         if finish_datetime is not None:
             if task_status == '已完成测试' and finish_datetime.strftime("%Y%m%d") == datetime.date.today().strftime(
                     "%Y%m%d"):
-                finish.append(f'{task_name} ,{task_status}, {memo} --- {tester}\n')
+                finish.append(f'{task_name} ,{task_status}, {memo} --- {testers_str}\n')
         if task_status == '测试中':
-            doing.append(f'{task_name} ,{task_status}, {memo} --- {tester}\n')
+            doing.append(f'{task_name} ,{task_status}, {memo} --- {testers_str}\n')
         if task_status == '待启动' or task_status == '测试暂停':
             stop.append(f'{task_name} ,{task_status}, {memo} \n')
 
