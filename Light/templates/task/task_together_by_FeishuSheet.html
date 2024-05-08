@@ -1,0 +1,60 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% load common %}
+{% load permission %}
+
+{% block content %}
+
+
+    <div style="border: 1px solid black;">
+        <div style="background: #c0a16b">【今日测试进度】</div>
+        <hr>
+        <div>【时间】<span id="date"></span></div>
+        {#        <textarea name="" id="" cols="70" rows="10">{{ messages }}</textarea>#}
+        <p style="white-space: pre-line;padding-left: 5px">{{ messages }}</p>
+    </div>
+
+    <div class="left" style="margin-top: 5px;">
+        {% if request|has_permission:"my_task_list" %}
+            <a class="btn btn-info btn-xs" id="btnSendTask" href="{% url_plus request 'my_task_list' %}">查看我的测试任务</a>
+        {% endif %}
+    </div>
+
+    <div class="right" style="margin-top: 5px;">
+        {% if request|has_permission:"send_feishu_sheet" %}
+            <a class="btn btn-info btn-xs" id="btnSendTask" href="{% url_plus request 'send_feishu_sheet' %}">发送测试进度(大群)</a>
+        {% endif %}
+    </div>
+
+    <div class="right" style="margin-top: 5px;padding-right: 30px">
+        {% if request|has_permission:"send_feishu_sheet" %}
+            <a class="btn btn-info btn-xs" id="btnSendTask" href="{% url_plus request 'send_feishu_sheet' %}">发送测试进度（测试群）</a>
+        {% endif %}
+    </div>
+
+
+
+{% endblock %}
+
+{% block js %}
+    <script>
+        // 获取当前日期和时间
+        var today = new Date();
+        // 获取日期
+        var date = today.getDate();
+        // 获取月份
+        var month = today.getMonth() + 1;
+        // 获取年份
+        var year = today.getFullYear();
+        // 获取小时
+        {#var hours = today.getHours();#}
+        {#// 获取分钟#}
+        {#var minutes = today.getMinutes();#}
+        {#// 获取秒数#}
+        {#var seconds = today.getSeconds();#}
+        // 将日期和时间格式化为字符串
+        var formattedDate = year + "-" + month + "-" + date
+        // 将字符串显示在 HTML 页面上
+        document.getElementById("date").innerHTML = formattedDate;
+    </script>
+{% endblock %}

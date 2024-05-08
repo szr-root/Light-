@@ -12,7 +12,8 @@ from django.shortcuts import render, redirect
 from Light import models
 from Light.views.account import get_referer_path
 from utils.pager import Pagination
-from Light.scripts.feishu import feishu_send_massage
+from Light.scripts.feishu import new_feishu_send_massage
+from Light.scripts.sheet import get_messages
 from Light.forms.task import AddTask, TaskEditModelForm
 
 
@@ -149,6 +150,15 @@ def task_together(request):
 
     return render(request, 'task/task_together.html', {'messages': messages})
 
+def task_together_feishu(request):
+    messages = get_messages()
+    return render(request, 'task/task_together_by_FeishuSheet.html', {'messages': messages})
+
+def send_feishu_sheet(request):
+    messages = get_messages()
+    new_feishu_send_massage(messages)
+    return redirect('task_together_feishu')
+
 
 def send_feishu(request):
     objects = models.Task.objects.filter(active=1).all()
@@ -193,5 +203,5 @@ def send_feishu(request):
             messages += f'{i}. {item}'
             i += 1
 
-    feishu_send_massage(messages)
+    new_feishu_send_massage(messages)
     return redirect('task_together')

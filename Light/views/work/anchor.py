@@ -9,9 +9,11 @@ import asyncio
 from django.contrib import messages
 from django.core.handlers import exception
 from django.shortcuts import HttpResponse, redirect
+from django.http import JsonResponse
 
 
 async def anchor_online(request):
+    msg = ''
     try:
         headers = {
             "authority": "api.livehouse.click",
@@ -66,9 +68,11 @@ async def anchor_online(request):
 
         loop = asyncio.get_event_loop()
         loop.run_until_complete(asyncio.wait(tasks))
-
-    except exception as s:
+        msg = '批量主播上线执行成功'
+    except Exception as s:
         msg = '批量主播上线执行失败'
+        print('error')
         messages.add_message(request, messages.ERROR, msg)
     finally:
-        return redirect('home')
+        print('final')
+        return JsonResponse({'result': msg})

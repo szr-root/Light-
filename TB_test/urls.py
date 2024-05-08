@@ -14,14 +14,16 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.contrib import admin
 from django.urls import path
+
 from Light.views import account
-from Light.views.user import info
+from Light.views.user import info, celery_test
 from Light.views.task import task
 from Light.views.work import anchor
 
 urlpatterns = [
-    # path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls, name='admin'),
     # 用户相关
     path('login/', account.login, name='login'),
     path('home/', account.home, name='home'),
@@ -36,7 +38,9 @@ urlpatterns = [
     path('task/edit_task/<int:pk>/', task.edit_task, name='edit_task'),
     path('task/delete_task/<int:pk>/', task.delete_task, name='delete_task'),
     path('task/task_together/', task.task_together, name='task_together'),
+    path('task/task_together_feishu/', task.task_together_feishu, name='task_together_feishu'),
     path('task/send_feishu/', task.send_feishu, name='send_feishu'),
+    path('task/send_feishu_sheet/', task.send_feishu_sheet, name='send_feishu_sheet'),
 
     # 业务相关
     path('anchor/anchor_online/', anchor.anchor_online, name='anchor_online'),
@@ -48,5 +52,6 @@ urlpatterns = [
     path('user/tester_list/', info.tester_list, name='tester_list'),
     path('user/edit_tester/<int:pk>/', info.edit_tester, name='edit_tester'),
     path('user/delete_tester/<int:pk>/', info.delete_tester, name='delete_tester'),
+    path('user/get_mobile/', celery_test.get_mobie, name='celery_test'),
 
 ]

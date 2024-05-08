@@ -29,13 +29,14 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    # 'django.contrib.admin',
-    # 'django.contrib.auth',
-    # 'django.contrib.contenttypes',
-    # 'django.contrib.sessions',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'Light.apps.LightConfig'
+    'Light.apps.LightConfig',
+    'django_celery_beat',
 ]
 
 MIDDLEWARE = [
@@ -43,7 +44,7 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    # 'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "utils.md.AuthMiddlewarePathInfo",
@@ -61,7 +62,7 @@ TEMPLATES = [
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
-                # 'django.contrib.auth.context_processors.auth',
+                'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
         },
@@ -166,8 +167,8 @@ Light_LOGIN_NAME = "login"
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_CACHE_ALIAS = "default"
 
-Light_WHITE_URL = ["/login/", "/sms/login/", '/send/sms/', 'add_new_develop/']
-Light_WHITE_PERMISSION_NAME = ["login", "sms_login", "send_sms", ]
+Light_WHITE_URL = ["/login/", "/sms/login/", '/send/sms/', 'add_new_develop/', '/admin', ]
+Light_WHITE_PERMISSION_NAME = ["login", "sms_login", "send_sms", 'admin']
 # NB_PERMISSIONS = {
 #     "ADMIN": ["home", ],
 #     "CUSTOMER": ['home', 'user'],
@@ -186,7 +187,9 @@ Light_PERMISSIONS = {
         'edit_task': {"parent": 'all_task_list', "text": "编辑任务"},
         'delete_task': {"parent": 'my_task_list', "text": "删除任务"},
         'task_together': {"parent": None, "text": "测试任务汇总"},
+        'task_together_feishu': {"parent": None, "text": "飞书表格测试任务汇总"},
         'send_feishu': {"parent": 'all_task_list', "text": "发送测试任务"},
+        'send_feishu_sheet': {"parent": 'all_task_list', "text": "发送飞书表格测试任务"},
 
         'anchor_online': {"parent": None, "text": "主播上线"},
 
@@ -197,6 +200,8 @@ Light_PERMISSIONS = {
         'tester_list': {"parent": None, "text": "测试人员列表"},
         'edit_tester': {"parent": 'tester_list', "text": "编辑测试人员列表"},
         'delete_tester': {"parent": 'tester_list', "text": "删除测试人员列表"},
+
+        'celery_test': {"parent": 'None', "text": "celery_test"},
     },
     "Normal": {
         "logout": {"parent": None, "text": "退出"},
@@ -209,6 +214,8 @@ Light_PERMISSIONS = {
         'edit_task': {"parent": 'my_task_list', "text": "编辑任务"},
         'delete_task': {"parent": 'my_task_list', "text": "编辑任务"},
         'task_together': {"parent": None, "text": "测试任务汇总"},
+        'task_together_feishu': {"parent": None, "text": "飞书表格测试任务汇总"},
+        'send_feishu_sheet': {"parent": 'all_task_list', "text": "发送飞书表格测试任务"},
         # 'send_feishu': {"parent": 'task_list', "text": "编辑任务"},
 
         'anchor_online': {"parent": None, "text": "主播上线"},
@@ -235,6 +242,7 @@ Light_MENUS = {
                 {"text": "我的任务记录", "name": "my_task_lst", "url": "/task/my_task_list/"},
                 # {"text": "创建测试任务", "name": "add_task", "url": "/task/add_task/"},
                 {"text": "测试任务汇总", "name": "task_together", "url": "/task/task_together/"},
+                {"text": "飞书表格测试任务汇总", "name": "task_together_feishu", "url": "/task/task_together_feishu/"},
 
             ]
         },
@@ -289,3 +297,37 @@ Light_MENUS = {
 #     from .local_settings import *
 # except ImportError:
 #     pass
+
+
+# ############ celery的配置信息######
+# 1 Broker配置，使用Redis作为消息中间件
+BROKER_URL = 'redis://:qwe123@127.0.0.1:6379/1'
+# 2 BACKEND配置，使用redis
+RESULT_BACKEND = 'redis://:qwe123@127.0.0.1:6379/2'
+# 3 序列化方案--》json
+ACCEPT_CONTENT = ['json']
+TASK_SERIALIZER = 'json'
+# 结果序列化方案
+RESULT_SERIALIZER = 'json'
+
+# 4 任务结果过期时间，秒
+TASK_RESULT_EXPIRES = 60 * 60 * 24
+
+# 5 时区配置
+TIMEZONE = 'Asia/Shanghai'
+USE_I18N = True
+USE_L10N = True
+USE_TZ = False
+
+CELERYBEAT_SCHEDULER = 'django_celery_beat.schedulers.DatabaseScheduler'
+# 只要配了这个，原来celery中的定时任务统一不能用了，需要我们手动配置了
+
+# from datetime import timedelta
+
+# CELERYBEAT_SCHEDULE = {
+#     'every_5_second': {
+#         'task': 'Light.tasks.add',
+#         'schedule': timedelta(seconds=5),
+#         'args': (33, 44),
+#     }
+# }

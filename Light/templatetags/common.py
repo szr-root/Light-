@@ -63,3 +63,5 @@ def tran_amount(charge_type, amount):
 @register.simple_tag()
 def tran_color_class(charge_type):
     return models.TransactionRecord.charge_type_class_mapping[charge_type]
+
+
